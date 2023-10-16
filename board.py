@@ -30,7 +30,7 @@ class Board:
         # Initialize the game board logic here
         pass
 
-    def draw_board(self, screen, selected_tile=None):
+    def draw_board(self, screen, selected_tile=None, mouse_pos=None):
         for row in range(ROWS):
             for col in range(COLS):
                 # 1: red 2: green 3: blue 4: yellow 5: purple
@@ -48,18 +48,26 @@ class Board:
                 tile_size = min(CELL_SIZE)  # Ensure the tile size is the smaller of the two dimensions (width and height)
                 x = self.x + col * tile_size  # Calculate the x-coordinate of the current tile
                 y = self.y + row * tile_size  # Calculate the y-coordinate of the current tile
+
+                # Draw the tile
                 pygame.draw.rect(screen, color, (x, y, tile_size, tile_size))
+
+                # Add black borders around the tiles
+                border_color = (0, 0, 0)  # Border color: black
+                border_width = 2  # Border width: 2px
+                pygame.draw.rect(screen, border_color, (x, y, tile_size, tile_size), border_width)
+
+                # Check if mouse is hovering the tile and draw a border around it
+                if mouse_pos and x <= mouse_pos[0] <= x + tile_size and y <= mouse_pos[1] <= y + tile_size:
+                    temp_border_color = (255, 255, 255)
+                    temp_border_width = 4
+                    pygame.draw.rect(screen, temp_border_color, (x, y, tile_size, tile_size), temp_border_width)
 
                 # Check if the current tile is the selected tile, and if so, draw a border around it
                 if (row, col) == selected_tile:
                     selected_border_color = (255, 255, 255)  # Border color for selected tile: white
                     selected_border_width = 4  # Border width for selected tile: 4px
                     pygame.draw.rect(screen, selected_border_color, (x, y, tile_size, tile_size), selected_border_width)
-                else:
-                    # Add borders around the tiles (change border color and width based on your preference)
-                    border_color = (0, 0, 0)  # Border color: black
-                    border_width = 2  # Border width: 2px
-                    pygame.draw.rect(screen, border_color, (x, y, tile_size, tile_size), border_width)
 
     def update_board(self):
         # Update the game board logic here

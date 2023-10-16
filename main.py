@@ -11,6 +11,7 @@ running = True
 selected_tile = None
 
 while running:
+    mouse_pos = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -22,7 +23,7 @@ while running:
                 if selected_tile is None:
                     selected_tile = (row, col)
                 else:
-                    # Try to swap the selected tile with the clicked tile
+                    # Try to swap the selected tile with the clicked tile (or swap with itself to deselect)
                     board.swap_candies(selected_tile[0], selected_tile[1], row, col)
                     selected_tile = None
 
@@ -32,7 +33,7 @@ while running:
 
     # Draw the game board with the selected tile highlighted
     screen.fill((255, 255, 255))
-    board.draw_board(screen, selected_tile)
+    board.draw_board(screen, selected_tile, mouse_pos)
     pygame.display.flip()
 
 pygame.quit()
