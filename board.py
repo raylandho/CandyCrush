@@ -4,7 +4,7 @@ from constants import ROWS, COLS, CELL_SIZE, window_size
 
 class Board:
     def __init__(self):
-        self.board = [[random.randint(1, 6) for _ in range(COLS)] for _ in range(ROWS)]
+        self.board = [[random.randint(1, 5) for _ in range(COLS)] for _ in range(ROWS)]
         self.calculate_board_position()
 
     def calculate_board_position(self):
@@ -15,16 +15,27 @@ class Board:
         self.y = (window_size[1] - board_height) // 2
 
     def swap_candies(self, row1, col1, row2, col2):
-        # Swap candies at (row1, col1) and (row2, col2) on the board
+        # Swap tiles at (row1, col1) and (row2, col2) on the board
+        #print(self.board[row1][col1])
         self.board[row1][col1], self.board[row2][col2] = self.board[row2][col2], self.board[row1][col1]
+        #print(self.board[row1][col1])
 
     def check_matches(self):
         # Check for horizontal matches
         for row in range(ROWS):
             for col in range(COLS - 2):
                 if self.board[row][col] == self.board[row][col + 1] == self.board[row][col + 2]:
-                    # Handle matching candies (for example, set them to 0)
-                    pass
+                    # Cascade tiles above
+                    curr_row = row
+                    while curr_row > 0:
+                        self.board[curr_row][col] = self.board[curr_row - 1][col]
+                        self.board[curr_row][col + 1] = self.board[curr_row - 1][col + 1]
+                        self.board[curr_row][col + 2] = self.board[curr_row - 1][col + 2]
+                        curr_row -= 1
+                    # Refill the top row with random values
+                    self.board[0][col] = random.randint(1, 5)
+                    self.board[0][col + 1] = random.randint(1, 5)
+                    self.board[0][col + 2] = random.randint(1, 5)
 
     def initialize_board(self):
         # Initialize the game board logic here

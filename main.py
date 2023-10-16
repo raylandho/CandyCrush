@@ -22,6 +22,7 @@ while running:
             if 0 <= row < ROWS and 0 <= col < COLS:
                 if selected_tile is None:
                     selected_tile = (row, col)
+                    #print(selected_tile)
                 else:
                     # Try to swap the selected tile with the clicked tile (or swap with itself to deselect)
                     board.swap_candies(selected_tile[0], selected_tile[1], row, col)
